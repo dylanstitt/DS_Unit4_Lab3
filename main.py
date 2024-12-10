@@ -6,37 +6,33 @@ from Stack import ArrayStack
 from string import ascii_lowercase, ascii_uppercase
 
 def clean(content):
-    newContent = []
-    for line in content:
-        newLine = []
-        for word in line.split(' '):
-            newWord = ""
-            for char in word:
-                if char in ascii_lowercase+ascii_uppercase:
-                    newWord += char
-            newLine.append(newWord)
-        newContent.append(' '.join(newLine))
+    content = content.split(' ')
+    newContent = ""
+    for word in content:
+        newWord = ""
+        for char in word:
+            if char in ascii_lowercase+ascii_uppercase+' '+'\n':
+                newWord += char
+        newContent += newWord + ' '
     return newContent
 
 def getContent(filename):
     with open(filename, 'r') as file:
-        return clean(file.read().splitlines())
-
+        return clean(file.read())
 
 def main():
     stack = ArrayStack()
-    content = getContent('earnest.txt')
+    content = getContent('earnest.txt').split(' ')
 
-    for line in content:
-        if len(line) > 1:
-            stack.push(line)
+    for i in content:
+        stack.push(i)
 
-    new = ""
+    new = ''
     for i in range(len(stack)):
         new += stack.pop() + ' '
+
     with open('output.txt', 'w') as file:
         file.write(new)
-
 
 if __name__ == '__main__':
     main()
